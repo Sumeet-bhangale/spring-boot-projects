@@ -56,6 +56,18 @@ public class ProductController {
 	}
 
 	
+	/// Find All by Price JPA
+	
+	@GetMapping("/listProductsByPrice")
+	public String listProductsByPrice(ModelMap model, double price) {
+	    List<Product> listOfProducts = productRepository.findAllByPrice(price);
+
+	        model.addAttribute("prodlist", listOfProducts);
+	        return "listofProducts";
+	}
+	
+	
+	
 	
 	// Add Product
 	// Forms
