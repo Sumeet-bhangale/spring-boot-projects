@@ -11,6 +11,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "products_db")
@@ -21,9 +24,12 @@ public class Product {
 	@Column(name = "id")
 	private Long id;
 
+	@NotBlank
+	@Size(min=2, max=10, message = "Name should be min 2 chars and not more than 10 chars")
 	@Column(name = "name")
 	private String name;
 
+	
 	@Column(name = "price")
 	private double price;
 

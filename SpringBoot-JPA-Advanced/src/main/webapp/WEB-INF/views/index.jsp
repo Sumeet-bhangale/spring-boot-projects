@@ -20,14 +20,6 @@
 	</form>
 
 
-	<br>
-	<br> Search Products by name starting with
-
-	<form action="listProductsByNameStartingWith" method="GET">
-		<br> Name : <input name="name"> <br> <input
-			type="submit">
-	</form>
-
 
 </body>
 </html>

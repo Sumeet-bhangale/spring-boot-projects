@@ -3,10 +3,12 @@ package com.Ecom.controller;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.Ecom.entity.Product;
 import com.Ecom.repository.ProductRepository;
 
+import jakarta.validation.Valid;
 
 @Controller
 public class ProductController {
@@ -35,38 +38,37 @@ public class ProductController {
 
 		return "listofProducts";
 	}
+	
+	
 
-	
-	
-	///  Find All by Name JPA
-	
-	
+	/// Find All by Name JPA
+
 	@GetMapping("/listProductsByName")
 	public String listProductsByName(ModelMap model, String name) {
-	    List<Product> listOfProducts = productRepository.findAllByName(name);
+		List<Product> listOfProducts = productRepository.findAllByName(name);
 
-	    if (!listOfProducts.isEmpty()) {
-	        model.addAttribute("prodlist", listOfProducts);
-	        return "listofProducts";
-	    } else {
-	    	
-	    	model.addAttribute("name", name);
-	        return "product-not-found-byName";
-	    }
+		if (!listOfProducts.isEmpty()) {
+			model.addAttribute("prodlist", listOfProducts);
+			return "listofProducts";
+		} else {
+
+			model.addAttribute("name", name);
+			return "product-not-found-byName";
+		}
 	}
 
+	
 	
 	/// Find All by Price JPA
-	
+
 	@GetMapping("/listProductsByPrice")
 	public String listProductsByPrice(ModelMap model, double price) {
-	    List<Product> listOfProducts = productRepository.findAllByPrice(price);
+		List<Product> listOfProducts = productRepository.findAllByPrice(price);
 
-	        model.addAttribute("prodlist", listOfProducts);
-	        return "listofProducts";
+		model.addAttribute("prodlist", listOfProducts);
+		return "listofProducts";
 	}
-	
-	
+
 	
 	
 	// Add Product
@@ -82,7 +84,7 @@ public class ProductController {
 	}
 
 	@PostMapping("/addProduct")
-	public String addNewProduct(ModelMap model, @ModelAttribute("product") Product product) {
+	public String addNewProduct(ModelMap model, @ModelAttribute("product") @Valid Product product) {
 
 		System.out.println(product.getDateAdded());
 
@@ -121,10 +123,9 @@ public class ProductController {
 
 		return "edit-product-success";
 	}
+	
+	
 
-	
-	
-	
 	// Delete Product
 
 	@GetMapping("/deleteProduct")
@@ -142,5 +143,16 @@ public class ProductController {
 		} else {
 			return "delete-product-failed";
 		}
+	}
+
+	@ExceptionHandler
+	public ResponseEntity<Object> handler3(org.springframework.web.bind.MethodArgumentNotValidException ex) {
+
+		FieldError fe = ex.getFieldError();
+		fe.getRejectedValue();
+
+		return new ResponseEntity<>("  REJECTED VALUE is " + fe.getRejectedValue()
+				+ "<br>Sorry, Invalid argument values were passed that could not be processed. Contact our Customer Care to know more.",
+				HttpStatus.BAD_REQUEST);
 	}
 }
