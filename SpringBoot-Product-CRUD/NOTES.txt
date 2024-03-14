@@ -1,0 +1,37 @@
+After creating the initilazer project with the required dependencies like mysql driver, JPA:
+
+1. Add the following dependency in POM.xml if you wnat to work with JSP
+<!-- JSP support in Spring -->
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+	
+2. Go to application.properties
+server.port=80
+
+#JSP files configuation
+spring.mvc.view.prefix=/WEB-INF/views/
+spring.mvc.view.suffix=.jsp
+
+3. If working with DB, then add this as well 
+#Database MySQL
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:mysql://localhost:3307/ecommerce_db
+spring.datasource.username=root
+spring.datasource.password=root1234
+#spring.jpa.show-sql=true
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+
+
+More Steps:
+STEP 1: Create the class (@Entity class) that will represent the DB table
+`	EProduct for the eproduct table in ecommercedb
+
+STEP 2: Create Repositry interface for the above entity class
+This class will connect to the database.
+
+STEP 3: Create the Spring Controller (Servlet)
