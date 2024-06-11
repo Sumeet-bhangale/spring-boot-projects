@@ -28,6 +28,7 @@ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
 
 
 More Steps:
+
 STEP 1: Create the class (@Entity class) that will represent the DB table
 `	EProduct for the eproduct table in ecommercedb
 
